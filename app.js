@@ -3,22 +3,22 @@
 /*
  * Express Dependencies
  */
-var express = require('express');
-var app = express();
-var port = 3000;
+var express     = require('express'),
+    exphbs      = require('express-handlebars'),
+    compression = require('compression'),
+    bodyParser  = require('body-parser'),
+    apiRoutes   = require('./routes/api');
 
-/*
- * Use Handlebars for templating
- */
-var exphbs = require('express3-handlebars');
-var hbs;
+var app = express(),
+    port = 3000;
 
-// For gzip compression
-app.use(express.compress());
+// gzip compression
+app.use(compression());
 
-/*
- * Config for Production and Development
- */
+// body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 if (process.env.NODE_ENV === 'production') {
     // Set the default layout and locate layouts and partials
     app.engine('handlebars', exphbs({
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
 
     // Locate the views
     app.set('views', __dirname + '/dist/views');
-    
+
     // Locate the assets
     app.use(express.static(__dirname + '/dist/assets'));
 
@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === 'production') {
 
     // Locate the views
     app.set('views', __dirname + '/views');
-    
+
     // Locate the assets
     app.use(express.static(__dirname + '/assets'));
 }
@@ -51,19 +51,13 @@ if (process.env.NODE_ENV === 'production') {
 // Set Handlebars
 app.set('view engine', 'handlebars');
 
-
-
-/*
- * Routes
- */
 // Index Page
-app.get('/', function(request, response, next) {
+app.get('/', function(request, response) {
     response.render('index');
 });
 
+// API routes
+app.use('/api', apiRoutes);
 
-/*
- * Start it up
- */
 app.listen(process.env.PORT || port);
 console.log('Express started on port ' + port);
