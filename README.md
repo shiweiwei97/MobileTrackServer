@@ -5,16 +5,16 @@ MobileTrack API layer and front-end
 ### Setup Environment
 
 ```Shell
-# npm install -g bower grunt-cli
-# npm install
-# bower install
-# grunt workon
+$ npm install -g bower grunt-cli
+$ npm install
+$ bower install
+$ grunt workon
 ```
 
 ### Build for Production
 
 ```Shell
-# grunt build
+$ grunt build
 ```
 
 ### Heroku Link
