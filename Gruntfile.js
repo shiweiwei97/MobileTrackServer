@@ -17,21 +17,21 @@ module.exports = function (grunt) {
             scripts: {
                 files: [
                     'assets/scripts/**/*.js',
-                ],
+                ]
             },
             css: {
                 files: [
                     'assets/styles/**/*.css',
-                ],
+                ]
             },
-            sass: {
-                files: ['assets/styles/**/*.scss'],
-                tasks: ['sass:dev']
+            less: {
+                files: ['assets/styles/**/*.less'],
+                tasks: ['less:dev']
             },
             images: {
                 files: [
                     'assets/images/**/*.{png,jpg,jpeg,webp}'
-                ],
+                ]
             },
             express: {
                 files:  [ 'app.js', '!**/node_modules/**', '!Gruntfile.js' ],
@@ -39,7 +39,7 @@ module.exports = function (grunt) {
                 options: {
                     nospawn: true // Without this option specified express won't be reloaded
                 }
-            },
+            }
         },
 
         // Clean Config
@@ -54,7 +54,7 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: ['.tmp'],
+            server: ['.tmp']
         },
 
         // Hint Config
@@ -65,8 +65,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'assets/scripts/**/*.js',
-                '!assets/scripts/vendor/*',
-                'test/spec/**/*.js'
+                '!assets/bower_components/**/*'
             ]
         },
 
@@ -90,6 +89,34 @@ module.exports = function (grunt) {
             }
         },
 
+        less: {
+            // Development not compressed
+            dev: {
+                options: {
+                    // Whether to compress or not
+                    compress: false
+                },
+                files: {
+                    // compilation.css  :  source.less
+                    'assets/styles/AdminLTE.css': 'assets/styles/less/AdminLTE.less',
+                    //Non minified skin files
+                    'assets/styles/skins/skin-blue.css': 'assets/styles/less/skins/skin-blue.less',
+                    'assets/styles/skins/skin-black.css': 'assets/styles/less/skins/skin-black.less',
+                    'assets/styles/skins/skin-yellow.css': 'assets/styles/less/skins/skin-yellow.less',
+                    'assets/styles/skins/skin-green.css': 'assets/styles/less/skins/skin-green.less',
+                    'assets/styles/skins/skin-red.css': 'assets/styles/less/skins/skin-red.less',
+                    'assets/styles/skins/skin-purple.css': 'assets/styles/less/skins/skin-purple.less',
+                    'assets/styles/skins/skin-blue-light.css': 'assets/styles/less/skins/skin-blue-light.less',
+                    'assets/styles/skins/skin-black-light.css': 'assets/styles/less/skins/skin-black-light.less',
+                    'assets/styles/skins/skin-yellow-light.css': 'assets/styles/less/skins/skin-yellow-light.less',
+                    'assets/styles/skins/skin-green-light.css': 'assets/styles/less/skins/skin-green-light.less',
+                    'assets/styles/skins/skin-red-light.css': 'assets/styles/less/skins/skin-red-light.less',
+                    'assets/styles/skins/skin-purple-light.css': 'assets/styles/less/skins/skin-purple-light.less',
+                    'assets/styles/skins/_all-skins.css': 'assets/styles/less/skins/_all-skins.less'
+                }
+            }
+        },
+
         // Express Config
         express: {
             options: {
@@ -107,11 +134,7 @@ module.exports = function (grunt) {
             site: {
                 path: 'http://localhost:3000',
                 app: 'Google Chrome'
-            },
-            editor: {
-                path: './',
-                app: 'Sublime Text 2'
-            },
+            }
         },
 
         // Rev Config
@@ -168,24 +191,6 @@ module.exports = function (grunt) {
             }
         },
 
-        // CSSmin config
-        cssmin: {
-            // This task is pre-configured if you do not wish to use Usemin
-            // blocks for your CSS. By default, the Usemin block from your
-            // `index.html` will take care of minification, e.g.
-            //
-            //     <!-- build:css({.tmp,app}) styles/main.css -->
-            //
-            // dist: {
-            //     files: {
-            //         'dist/assets/styles/main.css': [
-            //             '.tmp/styles/{,*/}*.css',
-            //             'assets/styles/{,*/}*.css'
-            //         ]
-            //     }
-            // }
-        },
-
         // HTML Config
         htmlmin: {
             dist: {
@@ -239,6 +244,13 @@ module.exports = function (grunt) {
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
             },
+            images: {
+                expand: true,
+                dot: true,
+                cwd: 'assets/images/',
+                dest: 'dist/assets/images/',
+                src: '**/*'
+            }
         },
 
         // Concurrent Config
@@ -255,20 +267,17 @@ module.exports = function (grunt) {
     // Workon
     grunt.registerTask('workon', 'Start working on this project.', [
         'jshint',
-        'sass:dev',
+        'less:dev',
         'express:dev',
         'open:site',
-        // 'open:editor',
         'watch'
     ]);
-
 
     // Restart
     grunt.registerTask('restart', 'Restart the server.', [
         'express:dev',
         'watch'
     ]);
-
 
     // Build
     grunt.registerTask('build', 'Build production ready assets and views.', [
@@ -277,11 +286,11 @@ module.exports = function (grunt) {
         'useminPrepare',
         'imagemin',
         'concat',
-        'cssmin',
         'uglify',
         'copy:dist',
         'rev',
         'usemin',
+        'copy:images'
     ]);
 
 };

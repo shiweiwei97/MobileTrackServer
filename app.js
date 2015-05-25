@@ -6,6 +6,7 @@
 var express     = require('express'),
     exphbs      = require('express-handlebars'),
     compression = require('compression'),
+    path        = require('path'),
     bodyParser  = require('body-parser'),
     apiRoutes   = require('./routes/api');
 
@@ -19,34 +20,21 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === 'production') {
-    // Set the default layout and locate layouts and partials
-    app.engine('handlebars', exphbs({
-        defaultLayout: 'main',
-        layoutsDir: 'dist/views/layouts/',
-        partialsDir: 'dist/views/partials/'
-    }));
+// view engine config
+var assetsDir = process.env.NODE_ENV === 'production'? 'dist/assets': 'assets',
+    viewsDir = process.env.NODE_ENV === 'production'? 'dist/views': 'views';
 
-    // Locate the views
-    app.set('views', __dirname + '/dist/views');
+app.engine('handlebars', exphbs({
+    defaultLayout: 'admin',
+    layoutsDir: path.join(viewsDir, 'layouts'),
+    partialsDir: path.join(viewsDir, 'partials')
+}));
 
-    // Locate the assets
-    app.use(express.static(__dirname + '/dist/assets'));
+// Locate the views
+app.set('views', path.join('.', viewsDir));
 
-} else {
-    app.engine('handlebars', exphbs({
-        // Default Layout and locate layouts and partials
-        defaultLayout: 'main',
-        layoutsDir: 'views/layouts/',
-        partialsDir: 'views/partials/'
-    }));
-
-    // Locate the views
-    app.set('views', __dirname + '/views');
-
-    // Locate the assets
-    app.use(express.static(__dirname + '/assets'));
-}
+// Locate the assets
+app.use(express.static(path.join('.', assetsDir)));
 
 // Set Handlebars
 app.set('view engine', 'handlebars');
