@@ -49,8 +49,7 @@ module.exports = function (grunt) {
                     dot: true,
                     src: [
                         '.tmp',
-                        'dist/*',
-                        '!dist/.git*'
+                        'dist'
                     ]
                 }]
             },
