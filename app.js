@@ -47,6 +47,11 @@ app.get('/', function(request, response) {
 // API routes
 app.use('/api', require('./routes/api'));
 
+// Not implemented pages
+app.get('*', function(request, response) {
+    response.render('blank');
+});
+
 // start server
 app.listen(port);
 log.info('Express started on port ' + port);
