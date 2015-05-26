@@ -8,10 +8,10 @@ var express     = require('express'),
     compression = require('compression'),
     path        = require('path'),
     bodyParser  = require('body-parser'),
-    apiRoutes   = require('./routes/api');
+    log         = require('log4js').getLogger();
 
-var app = express(),
-    port = 3000;
+var app  = express(),
+    port = process.env.PORT || 3000;
 
 // gzip compression
 app.use(compression());
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // view engine config
 var assetsDir = process.env.NODE_ENV === 'production'? 'dist/assets': 'assets',
-    viewsDir = process.env.NODE_ENV === 'production'? 'dist/views': 'views';
+    viewsDir  = process.env.NODE_ENV === 'production'? 'dist/views': 'views';
 
 app.engine('handlebars', exphbs({
     defaultLayout: 'admin',
@@ -45,7 +45,8 @@ app.get('/', function(request, response) {
 });
 
 // API routes
-app.use('/api', apiRoutes);
+app.use('/api', require('./routes/api'));
 
-app.listen(process.env.PORT || port);
-console.log('Express started on port ' + port);
+// start server
+app.listen(port);
+log.info('Express started on port ' + port);

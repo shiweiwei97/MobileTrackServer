@@ -242,13 +242,6 @@ module.exports = function (grunt) {
                 cwd: 'assets/styles',
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
-            },
-            images: {
-                expand: true,
-                dot: true,
-                cwd: 'assets/images/',
-                dest: 'dist/assets/images/',
-                src: '**/*'
             }
         },
 
@@ -308,8 +301,7 @@ module.exports = function (grunt) {
         'uglify',
         'copy:dist',
         'rev',
-        'usemin',
-        'copy:images'
+        'usemin'
     ]);
 
 };
