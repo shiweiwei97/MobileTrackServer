@@ -35,6 +35,11 @@ app.set('views', path.join('.', viewsDir));
 
 // Locate the assets
 app.use(express.static(path.join('.', assetsDir)));
+app.use('/users',    express.static(path.join('.', assetsDir)));
+app.use('/retention', express.static(path.join('.', assetsDir)));
+app.use('/engage',    express.static(path.join('.', assetsDir)));
+app.use('/features',  express.static(path.join('.', assetsDir)));
+app.use('/devices',   express.static(path.join('.', assetsDir)));
 
 // Set Handlebars
 app.set('view engine', 'handlebars');
