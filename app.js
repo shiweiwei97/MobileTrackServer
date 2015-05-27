@@ -21,25 +21,24 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // view engine config
-var assetsDir = process.env.NODE_ENV === 'production'? 'dist/assets': 'assets',
-    viewsDir  = process.env.NODE_ENV === 'production'? 'dist/views': 'views';
+var appDir = process.env.NODE_ENV === 'production'? 'dist/app': 'app';
 
 app.engine('handlebars', exphbs({
     defaultLayout: 'admin',
-    layoutsDir: path.join(viewsDir, 'layouts'),
-    partialsDir: path.join(viewsDir, 'partials')
+    layoutsDir: path.join(appDir, 'views/layouts'),
+    partialsDir: path.join(appDir, 'views/partials')
 }));
 
 // Locate the views
-app.set('views', path.join('.', viewsDir));
+app.set('views', path.join(appDir, 'views'));
 
 // Locate the assets
-app.use(express.static(path.join('.', assetsDir)));
-app.use('/users',    express.static(path.join('.', assetsDir)));
-app.use('/retention', express.static(path.join('.', assetsDir)));
-app.use('/engage',    express.static(path.join('.', assetsDir)));
-app.use('/features',  express.static(path.join('.', assetsDir)));
-app.use('/devices',   express.static(path.join('.', assetsDir)));
+app.use(express.static(path.join('.', appDir)));
+app.use('/users',    express.static(path.join('.', appDir)));
+app.use('/retention', express.static(path.join('.', appDir)));
+app.use('/engage',    express.static(path.join('.', appDir)));
+app.use('/features',  express.static(path.join('.', appDir)));
+app.use('/devices',   express.static(path.join('.', appDir)));
 
 // Set Handlebars
 app.set('view engine', 'handlebars');
