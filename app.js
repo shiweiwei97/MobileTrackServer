@@ -21,24 +21,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // view engine config
-var appDir = process.env.NODE_ENV === 'production'? 'dist/app': 'app';
+var appDir    = process.env.NODE_ENV === 'production'? 'dist/app': 'app',
+    assetsDir = path.join(appDir, 'assets');
 
 app.engine('handlebars', exphbs({
-    defaultLayout: 'admin',
-    layoutsDir: path.join(appDir, 'views/layouts'),
-    partialsDir: path.join(appDir, 'views/partials')
+    defaultLayout: 'master',
+    layoutsDir:    path.join(appDir, 'views/layouts'),
+    partialsDir:   path.join(appDir, 'views/partials')
 }));
 
 // Locate the views
 app.set('views', path.join(appDir, 'views'));
 
 // Locate the assets
-app.use(express.static(path.join('.', appDir)));
-app.use('/users',    express.static(path.join('.', appDir)));
-app.use('/retention', express.static(path.join('.', appDir)));
-app.use('/engage',    express.static(path.join('.', appDir)));
-app.use('/features',  express.static(path.join('.', appDir)));
-app.use('/devices',   express.static(path.join('.', appDir)));
+app.use(              express.static(path.join('.', assetsDir), { maxAge: 3600000 }));
+app.use('/users',     express.static(path.join('.', assetsDir), { maxAge: 3600000 }));
+app.use('/retention', express.static(path.join('.', assetsDir), { maxAge: 3600000 }));
+app.use('/engage',    express.static(path.join('.', assetsDir), { maxAge: 3600000 }));
+app.use('/features',  express.static(path.join('.', assetsDir), { maxAge: 3600000 }));
+app.use('/devices',   express.static(path.join('.', assetsDir), { maxAge: 3600000 }));
 
 // Set Handlebars
 app.set('view engine', 'handlebars');

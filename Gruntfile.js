@@ -20,7 +20,7 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'app/scripts/**/*.js',
+                'app/assets/scripts/**/*.js',
                 '!app/bower_components/**/*'
             ]
         },
@@ -28,10 +28,10 @@ module.exports = function (grunt) {
         less: {
             dev: {
                 expand: true,
-                cwd: 'app/styles/less/',
+                cwd: 'app/assets/styles/less/',
                 src: ['AdminLTE.less', 'skins/skin-*.less'],
                 ext: '.css',
-                dest: 'app/styles/'
+                dest: 'app/assets/styles/'
             }
         },
 
@@ -39,7 +39,7 @@ module.exports = function (grunt) {
         useminPrepare: {
             html: ['app/**/*.handlebars'],
             options: {
-                dest: 'dist/app'
+                dest: 'dist/app/assets'
             }
         },
 
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         },
 
         copy: {
-            // copy font and templates
+            // copy templates
             release: {
                 files: [
                     {
@@ -64,8 +64,6 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: 'app',
                         src: [
-                            'font/**/*',
-                            'views/**/*.html',
                             'views/**/*.handlebars'
                         ],
                         dest: 'dist/app'
@@ -80,15 +78,14 @@ module.exports = function (grunt) {
                 algorithm: 'md5',
                 length: 8
             },
-            // rev images, js, css and font
+            // rev images, js, css
             release: {
                 files: [{
                     src: [
-                        'dist/app/images/*.{jpg,jpeg,gif,png,svg}',
-                        'dist/app/scripts/*.js',
-                        'dist/app/styles/*.css',
-                        'dist/app/styles/skins/*.css',
-                        'dist/app/font/**/*'
+                        'dist/app/assets/images/**/*.{jpg,jpeg,gif,png,svg}',
+                        'dist/app/assets/scripts/*.js',
+                        'dist/app/assets/styles/*.css',
+                        'dist/app/assets/styles/skins/*.css'
                     ]
                 }]
             }
@@ -99,18 +96,43 @@ module.exports = function (grunt) {
             release: {
                 files: [{
                     expand: true,
-                    cwd: 'app/images',
+                    cwd: 'app/assets/images',
                     src: '**/*.{png,jpg,jpeg}',
-                    dest: 'dist/app/images'
+                    dest: 'dist/app/assets/images'
+                }]
+            }
+        },
+
+        htmlmin: {
+            options: {
+                removeComments: true,
+                removeCommentsFromCDATA: true,
+                collapseWhitespace: true,
+                collapseBooleanAttributes: true,
+                removeAttributeQuotes: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeOptionalTags: true
+            },
+            release: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/app/views',
+                    src: ['**/*.handlebars'],
+                    dest: 'dist/app/views'
                 }]
             }
         },
 
         usemin: {
-            html: ['dist/app/**/*.html', 'dist/app/**/*.handlebars'],
-            css: ['dist/app/styles/*.css', 'dist/app/styles/skins/*.css'],
+            html: ['dist/app/views/**/*.handlebars'],
+            css: [
+                'dist/app/assets/styles/*.css',
+                'dist/app/assets/styles/skins/*.css'
+            ],
             options: {
-                assetsDirs: ['dist/app', 'dist/app/styles']
+                assetsDirs: ['dist/app/assets', 'dist/app/assets/styles']
             }
         },
 
@@ -142,21 +164,21 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: [
-                    'app/scripts/**/*.js',
+                    'app/assets/scripts/**/*.js',
                 ]
             },
             css: {
                 files: [
-                    'app/styles/**/*.css',
+                    'app/assets/styles/**/*.css',
                 ]
             },
             less: {
-                files: ['app/styles/**/*.less'],
+                files: ['app/assets/styles/**/*.less'],
                 tasks: ['less:dev']
             },
             images: {
                 files: [
-                    'app/images/**/*.{png,jpg,jpeg,webp}'
+                    'app/assets/images/**/*.{png,jpg,jpeg,webp}'
                 ]
             },
             express: {
@@ -206,7 +228,8 @@ module.exports = function (grunt) {
         'cssmin',
         'copy',
         'filerev',
-        'usemin'
+        'usemin',
+        'htmlmin'
     ]);
 
 };
