@@ -2,7 +2,6 @@
 
 module.exports = function (grunt) {
 
-
     var pkg = grunt.file.readJSON('package.json');
 
     grunt.initConfig({
@@ -11,9 +10,11 @@ module.exports = function (grunt) {
 
         // clean up generated dirs
         clean: {
-            release: [ 'dist', '.tmp' ]
+            release: [ 'dist', '.tmp' ],
+            temp: ['.tmp']
         },
 
+        // use .jshintrc options
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
@@ -25,6 +26,7 @@ module.exports = function (grunt) {
             ]
         },
 
+        // generate css from less
         less: {
             dev: {
                 expand: true,
@@ -56,7 +58,8 @@ module.exports = function (grunt) {
         },
 
         copy: {
-            // copy templates
+            // only copy the templates,
+            // images, css and js files will be taken care of by imagemin, cssmin and uglify
             release: {
                 files: [
                     {
@@ -72,13 +75,13 @@ module.exports = function (grunt) {
             }
         },
 
+        // rename images, js and css with content hash
         filerev: {
             options: {
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 8
             },
-            // rev images, js, css
             release: {
                 files: [{
                     src: [
@@ -91,8 +94,8 @@ module.exports = function (grunt) {
             }
         },
 
+        // minify images
         imagemin: {
-            // minimized images
             release: {
                 files: [{
                     expand: true,
@@ -103,6 +106,7 @@ module.exports = function (grunt) {
             }
         },
 
+        // minify html
         htmlmin: {
             options: {
                 removeComments: true,
@@ -125,6 +129,7 @@ module.exports = function (grunt) {
             }
         },
 
+        // usemin configurations
         usemin: {
             html: ['dist/app/views/**/*.handlebars'],
             css: [
@@ -229,7 +234,8 @@ module.exports = function (grunt) {
         'copy',
         'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'clean:temp'
     ]);
 
 };
