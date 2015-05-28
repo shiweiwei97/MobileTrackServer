@@ -8,6 +8,15 @@ module.exports = function (grunt) {
 
         pkg: pkg,
 
+        config: {
+            imageTypes: 'jpg,jpeg,gif,png,svg',
+            dirs: {
+                assets: 'app/assets',
+                distAssets: 'dist/app/assets',
+                distViews: 'dist/app/views'
+            }
+        },
+
         // clean up generated dirs
         clean: {
             release: [ 'dist', '.tmp' ],
@@ -21,7 +30,7 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'app/assets/scripts/**/*.js',
+                '<%= config.dirs.assets %>/scripts/**/*.js',
                 '!app/bower_components/**/*'
             ]
         },
@@ -30,10 +39,10 @@ module.exports = function (grunt) {
         less: {
             dev: {
                 expand: true,
-                cwd: 'app/assets/styles/less/',
+                cwd: '<%= config.dirs.assets %>/styles/less/',
                 src: ['AdminLTE.less', 'skins/skin-*.less'],
                 ext: '.css',
-                dest: 'app/assets/styles/'
+                dest: '<%= config.dirs.assets %>/styles/'
             }
         },
 
@@ -41,7 +50,7 @@ module.exports = function (grunt) {
         useminPrepare: {
             html: ['app/**/*.handlebars'],
             options: {
-                dest: 'dist/app/assets'
+                dest: '<%= config.dirs.distAssets %>'
             }
         },
 
@@ -85,10 +94,10 @@ module.exports = function (grunt) {
             release: {
                 files: [{
                     src: [
-                        'dist/app/assets/images/**/*.{jpg,jpeg,gif,png,svg}',
-                        'dist/app/assets/scripts/*.js',
-                        'dist/app/assets/styles/*.css',
-                        'dist/app/assets/styles/skins/*.css'
+                        '<%= config.dirs.distAssets %>/images/**/*.{<%=config.imageTypes%>}',
+                        '<%= config.dirs.distAssets %>/scripts/*.js',
+                        '<%= config.dirs.distAssets %>/styles/*.css',
+                        '<%= config.dirs.distAssets %>/styles/skins/*.css'
                     ]
                 }]
             }
@@ -99,9 +108,9 @@ module.exports = function (grunt) {
             release: {
                 files: [{
                     expand: true,
-                    cwd: 'app/assets/images',
-                    src: '**/*.{png,jpg,jpeg}',
-                    dest: 'dist/app/assets/images'
+                    cwd: '<%= config.dirs.assets %>/images',
+                    src: '**/*.{<%=config.imageTypes%>}',
+                    dest: '<%= config.dirs.distAssets %>/images'
                 }]
             }
         },
@@ -122,22 +131,22 @@ module.exports = function (grunt) {
             release: {
                 files: [{
                     expand: true,
-                    cwd: 'dist/app/views',
+                    cwd: '<%= config.dirs.distViews %>',
                     src: ['**/*.handlebars'],
-                    dest: 'dist/app/views'
+                    dest: '<%= config.dirs.distViews %>'
                 }]
             }
         },
 
         // usemin configurations
         usemin: {
-            html: ['dist/app/views/**/*.handlebars'],
+            html: ['<%= config.dirs.distViews %>/**/*.handlebars'],
             css: [
-                'dist/app/assets/styles/*.css',
-                'dist/app/assets/styles/skins/*.css'
+                '<%= config.dirs.distAssets %>/styles/*.css',
+                '<%= config.dirs.distAssets %>/styles/skins/*.css'
             ],
             options: {
-                assetsDirs: ['dist/app/assets', 'dist/app/assets/styles']
+                assetsDirs: ['<%= config.dirs.distAssets %>', '<%= config.dirs.distAssets %>/styles']
             }
         },
 
@@ -169,21 +178,21 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: [
-                    'app/assets/scripts/**/*.js',
+                    '<%= config.dirs.assets %>/scripts/**/*.js',
                 ]
             },
             css: {
                 files: [
-                    'app/assets/styles/**/*.css',
+                    '<%= config.dirs.assets %>/styles/**/*.css',
                 ]
             },
             less: {
-                files: ['app/assets/styles/**/*.less'],
+                files: ['<%= config.dirs.assets %>/styles/**/*.less'],
                 tasks: ['less:dev']
             },
             images: {
                 files: [
-                    'app/assets/images/**/*.{png,jpg,jpeg,webp}'
+                    '<%= config.dirs.assets %>/images/**/*.{png,jpg,jpeg,webp}'
                 ]
             },
             express: {
