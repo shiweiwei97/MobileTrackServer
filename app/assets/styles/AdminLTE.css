@@ -105,6 +105,9 @@ body {
   color: #444;
   border-top: 1px solid #d2d6de;
 }
+.main-footer strong {
+  visibility: hidden;
+}
 /* Fixed layout */
 .fixed .main-header,
 .fixed .main-sidebar,
