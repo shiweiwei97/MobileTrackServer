@@ -79,6 +79,15 @@ module.exports = function (grunt) {
                             'views/**/*.handlebars'
                         ],
                         dest: 'dist/app'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: 'app',
+                        src: [
+                            'assets/docs/**/*'
+                        ],
+                        dest: 'dist/app'
                     }
                 ]
             }
