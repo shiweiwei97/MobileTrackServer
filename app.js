@@ -20,6 +20,8 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.query());
+
 // view engine config
 var appDir    = process.env.NODE_ENV === 'production'? 'dist/app': 'app',
     assetsDir = path.join(appDir, 'assets');
@@ -51,6 +53,7 @@ app.get('/', function(request, response) {
 
 // API routes
 app.use('/api', require('./routes/api'));
+app.use('/wechat', require('./routes/wechat'));
 
 // Not implemented pages
 app.get('*', function(request, response) {
